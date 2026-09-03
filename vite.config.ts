@@ -4,9 +4,10 @@ import react from "@vitejs/plugin-react";
 import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 
-export default defineConfig(({ command }) => ({
+export default defineConfig({
   plugins: [
     tailwindcss(),
+
     tanstackStart({
       importProtection: {
         behavior: "error",
@@ -15,31 +16,28 @@ export default defineConfig(({ command }) => ({
           specifiers: ["server-only"],
         },
       },
-      // Keep the existing SSR error wrapper as the server entry point.
-      server: { entry: "server" },
+
+      server: {
+        entry: "server",
+      },
     }),
-    ...(command === "build"
-      ? [
-          nitro({
-            preset: "cloudflare-module",
-            output: {
-              dir: "dist",
-              serverDir: "dist/server",
-              publicDir: "dist/client",
-            },
-            cloudflare: {
-              nodeCompat: true,
-              deployConfig: true,
-            },
-          }),
-        ]
-      : []),
+
+    nitro(),
+
     react(),
   ],
-  css: { transformer: "lightningcss" },
+
+  css: {
+    transformer: "lightningcss",
+  },
+
   resolve: {
     tsconfigPaths: true,
-    alias: { "@": new URL("./src", import.meta.url).pathname },
+
+    alias: {
+      "@": new URL("./src", import.meta.url).pathname,
+    },
+
     dedupe: [
       "react",
       "react-dom",
@@ -49,6 +47,7 @@ export default defineConfig(({ command }) => ({
       "@tanstack/query-core",
     ],
   },
+
   optimizeDeps: {
     include: [
       "react",
@@ -58,8 +57,9 @@ export default defineConfig(({ command }) => ({
       "react/jsx-dev-runtime",
     ],
   },
+
   server: {
     host: "::",
     port: 8080,
   },
-}));
+});
