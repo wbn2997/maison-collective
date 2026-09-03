@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Generated application and deployment output
+dist/
+.tanstack/
+.wrangler/
+.output/
+.vinxi/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+*.log
